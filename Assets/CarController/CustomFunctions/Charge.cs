@@ -1,23 +1,17 @@
-﻿using Compiler;
+﻿using Mellis;
+using Mellis.Core.Interfaces;
 using UnityEngine;
 
-public class Charge : Function {
+public class Charge : ClrFunction
+{
+    public Charge() : base("ladda")
+    {
+    }
 
-	public Charge(){
-		name = "ladda";
-		buttonText = "ladda()";
-		inputParameterAmount.Add (0);
-		hasReturnVariable = false;
-		pauseWalker = false;
-	}
+    public override IScriptType Invoke(params IScriptType[] arguments)
+    {
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().Charge();
 
-
-	#region implemented abstract members of Function
-	public override Variable runFunction (Scope currentScope, Variable[] inputParas, int lineNumber)
-	{
-		GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerMovement> ().Charge (lineNumber);
-
-		return new Variable ();
-	}
-	#endregion
+        return null;
+    }
 }

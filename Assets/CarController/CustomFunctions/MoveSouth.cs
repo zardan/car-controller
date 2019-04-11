@@ -1,23 +1,15 @@
-﻿using Compiler;
+﻿using Mellis;
+using Mellis.Core.Interfaces;
 using UnityEngine;
 
-public class MoveSouth : Function {
+public class MoveSouth : ClrYieldingFunction
+{
+    public MoveSouth() : base("åk_mot_syd")
+    {
+    }
 
-	public MoveSouth(){
-		name = "åk_mot_syd";
-		buttonText = "åk_mot_syd()";
-		inputParameterAmount.Add (0);
-		hasReturnVariable = false;
-		pauseWalker = true;
-	}
-
-
-	#region implemented abstract members of Function
-	public override Variable runFunction (Scope currentScope, Variable[] inputParas, int lineNumber)
-	{
-		GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerMovement> ().MoveSouth ();
-
-		return new Variable ();
-	}
-	#endregion
+    public override void InvokeEnter(params IScriptType[] arguments)
+    {
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().MoveSouth();
+    }
 }
