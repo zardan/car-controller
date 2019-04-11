@@ -130,7 +130,7 @@ public class PlayerMovement : MonoBehaviour
 		isMoving = true;
 	}
 
-	public void Charge(int lineNumber)
+	public void Charge()
 	{
 		if (AtChargeStation)
 		{
@@ -139,7 +139,7 @@ public class PlayerMovement : MonoBehaviour
 		}
 		else
 		{
-			PMWrapper.RaiseError(lineNumber, "Kan inte ladda här. Se till att köra hela vägen till laddningsstationen.");
+			PMWrapper.RaiseError("Kan inte ladda här. Se till att köra hela vägen till laddningsstationen.");
 		}
 	}
 
