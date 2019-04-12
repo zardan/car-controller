@@ -2,11 +2,16 @@
 using System.Collections;
 using PM;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerMovement : MonoBehaviour
 {
-	public float PlayerSpeed = 4;
+	[FormerlySerializedAs("PlayerSpeed")]
+	public float playerSpeed = 4;
 	public bool isCharging;
+
+	[FormerlySerializedAs("AtChargeStation")]
+	public bool atChargeStation;
 
 	private Vector2 currentGridPosition;
 	private Vector3 startPosition;
@@ -16,18 +21,17 @@ public class PlayerMovement : MonoBehaviour
 	private bool isMoving;
 	private Direction currentDirection;
 
-	public bool AtChargeStation;
 
 	private void Update()
 	{
 		if (!isMoving) return;
 
-		transform.position += transform.up * Time.deltaTime * PMWrapper.speedMultiplier * PlayerSpeed;
+		transform.position += transform.up * Time.deltaTime * PMWrapper.speedMultiplier * playerSpeed;
 
 		// Calculate differance in distance without sqrt
-		if (Mathf.Pow(transform.position.x - lastPosition.x, 2) + Mathf.Pow(transform.position.y - lastPosition.y, 2) > Mathf.Pow(CityGrid.DistanceBetweenPoints, 2))
+		if (Mathf.Pow(transform.position.x - lastPosition.x, 2) + Mathf.Pow(transform.position.y - lastPosition.y, 2) > Mathf.Pow(CityGrid.distanceBetweenPoints, 2))
 		{
-			transform.position = lastPosition + transform.up * CityGrid.DistanceBetweenPoints;
+			transform.position = lastPosition + transform.up * CityGrid.distanceBetweenPoints;
 			isMoving = false;
 			lastPosition = transform.position;
 			PMWrapper.ResolveYield();
@@ -39,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
 		transform.position = startPosition;
 		isMoving = false;
 		SetDirection(startDirection);
-		AtChargeStation = false;
+		atChargeStation = false;
 	}
 
 	private void SetDirection(string direction)
@@ -83,7 +87,7 @@ public class PlayerMovement : MonoBehaviour
 	{
 		if (other.CompareTag("ChargeStation"))
 		{
-			AtChargeStation = true;
+			atChargeStation = true;
 		}
 	}
 
@@ -91,7 +95,7 @@ public class PlayerMovement : MonoBehaviour
 	{
 		if (other.CompareTag("ChargeStation"))
 		{
-			AtChargeStation = false;
+			atChargeStation = false;
 		}
 	}
 
@@ -132,7 +136,7 @@ public class PlayerMovement : MonoBehaviour
 
 	public void Charge()
 	{
-		if (AtChargeStation)
+		if (atChargeStation)
 		{
 			isCharging = true;
 			StartCoroutine(PlayChargeAnimation());
