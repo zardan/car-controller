@@ -30,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
 			transform.position = lastPosition + transform.up * CityGrid.DistanceBetweenPoints;
 			isMoving = false;
 			lastPosition = transform.position;
-			PMWrapper.UnpauseWalker();
+			PMWrapper.ResolveYield();
 		}
 	}
 
