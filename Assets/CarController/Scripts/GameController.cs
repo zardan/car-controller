@@ -11,6 +11,8 @@ public class GameController : MonoBehaviour, IPMCompilerStopped, IPMCaseSwitched
 		Main.RegisterFunction(new MoveEast());
 		Main.RegisterFunction(new MoveSouth());
 		Main.RegisterFunction(new MoveWest());
+
+		Main.RegisterLevelDefinitionContract<CarLevelDefinition>();
 	}
 
 	[Header("Prefabs")]
@@ -56,34 +58,33 @@ public class GameController : MonoBehaviour, IPMCompilerStopped, IPMCaseSwitched
 
 	private void CreateAssets()
 	{
-		// TODO
-		//var levelDefinition = PMWrapper.currentLevel.levelDefinition;
+		var levelDefinition = (CarLevelDefinition)PMWrapper.currentLevel.levelDefinition;
 
-		//foreach (Car car in levelDefinition.cars)
-		//{
-		//	Vector3 worldPosition = CityGrid.GetWorldPosition(car.position);
-		//	Vector3 positionWithOffset = new Vector3(worldPosition.x, worldPosition.y, -0.18f);
-		//	playerObject = Instantiate(PlayerPrefab, positionWithOffset, Quaternion.Euler(new Vector3(0, 180, 0)));
-		//	playerObject.GetComponent<PlayerMovement>().Init(car);
-		//}
+		foreach (Car car in levelDefinition.cars)
+		{
+			Vector3 worldPosition = CityGrid.GetWorldPosition(car.position);
+			Vector3 positionWithOffset = new Vector3(worldPosition.x, worldPosition.y, -0.18f);
+			playerObject = Instantiate(PlayerPrefab, positionWithOffset, Quaternion.Euler(new Vector3(0, 180, 0)));
+			playerObject.GetComponent<PlayerMovement>().Init(car);
+		}
 
-		//foreach (Station station in levelDefinition.stations)
-		//{
-		//	Vector3 position = CityGrid.GetWorldPosition(station.position);
-		//	GameObject stationObj = Instantiate(ChargeStationPrefab, position, Quaternion.Euler(new Vector3(0, 0, 0)));
-		//	stationObj.GetComponent<ChargeStation>().position = new Vector2(position.x, position.y);
-		//	ChargeStations.Add(stationObj);
-		//}
+		foreach (Station station in levelDefinition.stations)
+		{
+			Vector3 position = CityGrid.GetWorldPosition(station.position);
+			GameObject stationObj = Instantiate(ChargeStationPrefab, position, Quaternion.Euler(new Vector3(0, 0, 0)));
+			stationObj.GetComponent<ChargeStation>().position = new Vector2(position.x, position.y);
+			ChargeStations.Add(stationObj);
+		}
 
-		//if (levelDefinition.obstacles != null)
-		//{
-		//	foreach (Obstacles obstacle in levelDefinition.obstacles)
-		//	{
-		//		Vector3 position = CityGrid.GetWorldPosition(obstacle.position);
-		//		GameObject obstacleObj = Instantiate(ObstaclePrefab, position, Quaternion.identity);
-		//		Obstacles.Add(obstacleObj);
-		//	}
-		//}
+		if (levelDefinition.obstacles != null)
+		{
+			foreach (Obstacles obstacle in levelDefinition.obstacles)
+			{
+				Vector3 position = CityGrid.GetWorldPosition(obstacle.position);
+				GameObject obstacleObj = Instantiate(ObstaclePrefab, position, Quaternion.identity);
+				Obstacles.Add(obstacleObj);
+			}
+		}
 	}
 
 	private void DeleteLastLevel()

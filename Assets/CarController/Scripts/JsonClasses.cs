@@ -23,7 +23,7 @@ public class Obstacles
 	public Position position { get; set; }
 }
 
-public partial class LevelDefinition
+public class CarLevelDefinition : LevelDefinition
 {
 	public List<Car> cars { get; set; }
 	public List<Station> stations { get; set; }
