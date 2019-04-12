@@ -69,7 +69,7 @@ public class GameController : MonoBehaviour, IPMCompilerStopped, IPMCaseSwitched
 		foreach (Car car in levelDefinition.cars)
 		{
 			Vector3 worldPosition = CityGrid.GetWorldPosition(car.position);
-			Vector3 positionWithOffset = new Vector3(worldPosition.x, worldPosition.y, -0.18f);
+			var positionWithOffset = new Vector3(worldPosition.x, worldPosition.y, -0.18f);
 			playerObject = Instantiate(playerPrefab, positionWithOffset, Quaternion.Euler(new Vector3(0, 180, 0)));
 			playerObject.GetComponent<PlayerMovement>().Init(car);
 		}

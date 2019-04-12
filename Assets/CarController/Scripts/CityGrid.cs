@@ -54,7 +54,7 @@ public class CityGrid : MonoBehaviour
 		if (renderers.Length == 0)
 			throw new System.Exception("Could not find any renderers in children of gameobject \"" + obj.name + "\".");
 
-		Bounds bounds = new Bounds(obj.transform.position, Vector3.zero);
+		var bounds = new Bounds(obj.transform.position, Vector3.zero);
 		foreach (Renderer rend in renderers)
 		{
 			bounds.Encapsulate(rend.bounds);
