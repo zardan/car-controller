@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
 	private bool isMoving;
 	private Direction currentDirection;
 
+	static readonly int ANIM_CHARGE = Animator.StringToHash("Charge");
 
 	private void Update()
 	{
@@ -29,16 +30,21 @@ public class PlayerMovement : MonoBehaviour
 			return;
 		}
 
-		transform.position += transform.up * Time.deltaTime * PMWrapper.speedMultiplier * playerSpeed;
+		Transform car = transform;
+		Vector3 position = car.position;
+
+		position += car.up * Time.deltaTime * PMWrapper.speedMultiplier * playerSpeed;
 
 		// Calculate difference in distance without sqrt
-		if (Mathf.Pow(transform.position.x - lastPosition.x, 2) + Mathf.Pow(transform.position.y - lastPosition.y, 2) > Mathf.Pow(CityGrid.distanceBetweenPoints, 2))
+		if (Mathf.Pow(position.x - lastPosition.x, 2) + Mathf.Pow(position.y - lastPosition.y, 2) > Mathf.Pow(CityGrid.distanceBetweenPoints, 2))
 		{
-			transform.position = lastPosition + transform.up * CityGrid.distanceBetweenPoints;
+			position = lastPosition + transform.up * CityGrid.distanceBetweenPoints;
 			isMoving = false;
-			lastPosition = transform.position;
+			lastPosition = position;
 			PMWrapper.ResolveYield();
 		}
+
+		transform.position = position;
 	}
 
 	public void Reset()
@@ -166,8 +172,8 @@ public class PlayerMovement : MonoBehaviour
 
 	private IEnumerator PlayChargeAnimation()
 	{
-		var animator = GameObject.FindGameObjectWithTag("ChargeStation").GetComponent<Animator>();
-		animator.SetTrigger("Charge");
+		Animator animator = GameObject.FindGameObjectWithTag("ChargeStation").GetComponent<Animator>();
+		animator.SetTrigger(ANIM_CHARGE);
 
 		yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
 
