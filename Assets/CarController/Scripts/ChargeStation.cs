@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class ChargeStation : MonoBehaviour {
-
+public class ChargeStation : MonoBehaviour
+{
 	[HideInInspector]
 	public Vector2 position;
 }

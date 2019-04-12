@@ -1,10 +1,30 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 using PM;
+using UnityEngine;
 using UnityEngine.Serialization;
 
 public class GameController : MonoBehaviour, IPMCompilerStopped, IPMCaseSwitched
 {
+	[FormerlySerializedAs("ChargeStationPrefab")]
+	public GameObject chargeStationPrefab;
+
+	[HideInInspector]
+	[FormerlySerializedAs("ChargeStations")]
+	public List<GameObject> chargeStations = new List<GameObject>();
+
+	[FormerlySerializedAs("ObstaclePrefab")]
+	public GameObject obstaclePrefab;
+
+	[HideInInspector]
+	[FormerlySerializedAs("Obstacles")]
+	public List<GameObject> obstacles = new List<GameObject>();
+
+	[Header("Prefabs")]
+	[FormerlySerializedAs("PlayerPrefab")]
+	public GameObject playerPrefab;
+
+	GameObject playerObject;
+
 	static GameController()
 	{
 		Main.RegisterFunction(new Charge());
@@ -16,23 +36,11 @@ public class GameController : MonoBehaviour, IPMCompilerStopped, IPMCaseSwitched
 		Main.RegisterLevelDefinitionContract<CarLevelDefinition>();
 	}
 
-	[Header("Prefabs")]
-	[FormerlySerializedAs("PlayerPrefab")]
-	public GameObject playerPrefab;
-	[FormerlySerializedAs("ObstaclePrefab")]
-	public GameObject obstaclePrefab;
-	[FormerlySerializedAs("ChargeStationPrefab")]
-	public GameObject chargeStationPrefab;
-
-	[HideInInspector]
-	[FormerlySerializedAs("Obstacles")]
-	public List<GameObject> obstacles = new List<GameObject>();
-
-	[HideInInspector]
-	[FormerlySerializedAs("ChargeStations")]
-	public List<GameObject> chargeStations = new List<GameObject>();
-
-	private GameObject playerObject;
+	public void OnPMCaseSwitched(int caseNumber)
+	{
+		DeleteLastLevel();
+		CreateAssets();
+	}
 
 	public void OnPMCompilerStopped(StopStatus status)
 	{
@@ -56,19 +64,14 @@ public class GameController : MonoBehaviour, IPMCompilerStopped, IPMCaseSwitched
 				PMWrapper.RaiseTaskError("Podden kom inte hela vägen fram.");
 			}
 		}
+
 		if (playerMovement != null && !playerMovement.isCharging)
 		{
 			playerMovement.Reset();
 		}
 	}
 
-	public void OnPMCaseSwitched(int caseNumber)
-	{
-		DeleteLastLevel();
-		CreateAssets();
-	}
-
-	private void CreateAssets()
+	void CreateAssets()
 	{
 		var levelDefinition = (CarLevelDefinition)PMWrapper.currentLevel.levelDefinition;
 
@@ -99,7 +102,7 @@ public class GameController : MonoBehaviour, IPMCompilerStopped, IPMCaseSwitched
 		}
 	}
 
-	private void DeleteLastLevel()
+	void DeleteLastLevel()
 	{
 		Destroy(playerObject);
 
@@ -107,12 +110,14 @@ public class GameController : MonoBehaviour, IPMCompilerStopped, IPMCaseSwitched
 		{
 			Destroy(obj);
 		}
+
 		chargeStations.Clear();
 
 		foreach (GameObject obj in obstacles)
 		{
 			Destroy(obj);
 		}
+
 		obstacles.Clear();
 	}
 }

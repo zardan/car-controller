@@ -13,7 +13,8 @@ public abstract class MoveFunction : ClrYieldingFunction
 		var player = GameObject.FindGameObjectWithTag("Player");
 		if (!player)
 		{
-			Debug.LogError("Did not find player. Check if the map loaded from JSON correctly, and if it is missing a player.");
+			Debug.LogError(
+				"Did not find player. Check if the map loaded from JSON correctly, and if it is missing a player.");
 			PMWrapper.RaiseError("Internt fel: Finns ingen spelare i staden");
 			return;
 		}
