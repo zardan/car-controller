@@ -24,11 +24,14 @@ public class PlayerMovement : MonoBehaviour
 
 	private void Update()
 	{
-		if (!isMoving) return;
+		if (!isMoving)
+		{
+			return;
+		}
 
 		transform.position += transform.up * Time.deltaTime * PMWrapper.speedMultiplier * playerSpeed;
 
-		// Calculate differance in distance without sqrt
+		// Calculate difference in distance without sqrt
 		if (Mathf.Pow(transform.position.x - lastPosition.x, 2) + Mathf.Pow(transform.position.y - lastPosition.y, 2) > Mathf.Pow(CityGrid.distanceBetweenPoints, 2))
 		{
 			transform.position = lastPosition + transform.up * CityGrid.distanceBetweenPoints;
@@ -49,7 +52,9 @@ public class PlayerMovement : MonoBehaviour
 	private void SetDirection(string direction)
 	{
 		if (direction == null)
+		{
 			direction = "north";
+		}
 
 		switch (direction.ToLower())
 		{

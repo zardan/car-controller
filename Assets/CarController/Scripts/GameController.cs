@@ -38,14 +38,18 @@ public class GameController : MonoBehaviour, IPMCompilerStopped, IPMCaseSwitched
 	{
 		PlayerMovement playerMovement = null;
 		if (playerObject != null)
+		{
 			playerMovement = playerObject.GetComponent<PlayerMovement>();
-		
+		}
+
 		if (status == StopStatus.Finished)
 		{
 			if (playerMovement != null && playerMovement.atChargeStation)
 			{
 				if (!playerMovement.isCharging)
+				{
 					PMWrapper.RaiseTaskError("Podden laddades inte. Kom ihåg att ladda().");
+				}
 			}
 			else
 			{
@@ -53,7 +57,9 @@ public class GameController : MonoBehaviour, IPMCompilerStopped, IPMCaseSwitched
 			}
 		}
 		if (playerMovement != null && !playerMovement.isCharging)
+		{
 			playerMovement.Reset();
+		}
 	}
 
 	public void OnPMCaseSwitched(int caseNumber)
